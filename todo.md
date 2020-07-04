@@ -1,6 +1,8 @@
+# todo
+
+- formula text fields
 - multiple formulas
 - bookmark params/formulas
-- parse formulas - https://codeplea.com/tinyexpr
 - log density display
 - color choosers
 - coloring algorithms
@@ -11,8 +13,11 @@
 - make scale and iteration, offset and rotation spin controls (maybe)
 - combine model and params
 
+# done
+
+x parse formulas - https://codeplea.com/tinyexpr
 
 
+# 3d formulas
 
-- 3d formulas
 - rotation on each axis
