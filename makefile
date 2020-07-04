@@ -2,7 +2,7 @@ CC := clang
 WARN := -Wno-unused-command-line-argument
 CFLAGS := `pkg-config --cflags gtk+-3.0` 
 CLIBS :=  `pkg-config --libs gtk+-3.0`
-EXE := main
+EXE := strangeexplorer
 SRC := src/*
 
 default: $(EXE)

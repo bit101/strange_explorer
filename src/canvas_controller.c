@@ -4,6 +4,7 @@
 #include "controller.h"
 #include "model.h"
 #include "params.h"
+#include "tinyexpr.h"
 
 static cairo_surface_t* surface = NULL;
 extern Model* model;
@@ -20,15 +21,25 @@ void custom_draw(cairo_t* cr) {
   double c = params->c.value;
   double d = params->d.value;
   double x1, y1;
-
+  const char* x_str = "sin(a * y) + c * cos(a * x)";
+  const char* y_str = "sin(b * x) + d * cos(b * y)";
+  te_variable vars[] = {
+      {"x", &x}, {"y", &y}, {"a", &a}, {"b", &b}, {"c", &c}, {"d", &d},
+  };
+  te_expr* x_expr = te_compile(x_str, vars, 6, 0);
+  te_expr* y_expr = te_compile(y_str, vars, 6, 0);
   cairo_clear_white(cr);
   cairo_translate(cr, model->width / 2, model->height / 2);
 
   for (int i = 0; i < iter; i++) {
-    cairo_plot(cr, x * scale, y * scale);
+    double xx = x * scale;
+    double yy = y * scale;
+    if (xx >= -model->width / 2 && xx < model->width / 2 && yy >= -model->width / 2 && yy < model->height / 2) {
+      cairo_plot(cr, xx, yy);
+    }
 
-    x1 = sin(a * y) + c * cos(a * x);
-    y1 = sin(b * x) + d * cos(b * y);
+    y1 = te_eval(y_expr);
+    x1 = te_eval(x_expr);
     x = x1;
     y = y1;
   }
