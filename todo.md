@@ -1,7 +1,9 @@
 # todo
 
-- formula library
-- bookmark params/formulas
+- formulas to ext file
+- bookmark params
+- save new formulas
+- init x, y
 - log density display
 - color choosers
 - coloring algorithms
@@ -12,11 +14,14 @@
 - make scale and iteration, offset and rotation spin controls (maybe)
 - combine model and params
 - mouse interaction - pan, zoom
+- animation - start / stop params
+- randomize params
 
 # done
 
 x parse formulas - https://codeplea.com/tinyexpr
 x formula text fields
+x formula library
 
 
 # 3d formulas

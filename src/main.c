@@ -4,7 +4,6 @@
 #include "controller.h"
 #include "model.h"
 #include "params.h"
-#include "params_panel.h"
 
 Model* model;
 Params* params;
@@ -34,9 +33,7 @@ int main(int argc, char** argv) {
   }
 
   window = GTK_WIDGET(gtk_builder_get_object(builder, "window"));
-  controller_set_builder(builder);
-  params_set_builder(builder);
-  init_params();
+  controller_init(builder);
 
   gtk_builder_connect_signals(builder, NULL);
   gtk_widget_show_all(window);

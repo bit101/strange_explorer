@@ -11,9 +11,16 @@ extern Model* model;
 extern Params* params;
 static gboolean is_rendering = FALSE;
 
+double sign(double n) {
+  if (n >= 0) {
+    return 1;
+  }
+  return -1;
+}
+
 void custom_draw(cairo_t* cr) {
-  double x = 0.1;
-  double y = 0.1;
+  double x = 0.0;
+  double y = 0.0;
   double scale = params->scale.value;
   double iter = params->iter.value;
   double a = params->a.value;
@@ -24,10 +31,10 @@ void custom_draw(cairo_t* cr) {
   const char* x_str = model->x_formula;
   const char* y_str = model->y_formula;
   te_variable vars[] = {
-      {"x", &x}, {"y", &y}, {"a", &a}, {"b", &b}, {"c", &c}, {"d", &d},
+      {"x", &x}, {"y", &y}, {"a", &a}, {"b", &b}, {"c", &c}, {"d", &d}, {"sign", sign, TE_FUNCTION1},
   };
-  te_expr* x_expr = te_compile(x_str, vars, 6, 0);
-  te_expr* y_expr = te_compile(y_str, vars, 6, 0);
+  te_expr* x_expr = te_compile(x_str, vars, 7, 0);
+  te_expr* y_expr = te_compile(y_str, vars, 7, 0);
   cairo_clear_white(cr);
   cairo_translate(cr, model->width / 2, model->height / 2);
 
