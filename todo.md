@@ -1,7 +1,6 @@
 # todo
 
-- formula text fields
-- multiple formulas
+- formula library
 - bookmark params/formulas
 - log density display
 - color choosers
@@ -12,10 +11,12 @@
 - rotation
 - make scale and iteration, offset and rotation spin controls (maybe)
 - combine model and params
+- mouse interaction - pan, zoom
 
 # done
 
 x parse formulas - https://codeplea.com/tinyexpr
+x formula text fields
 
 
 # 3d formulas

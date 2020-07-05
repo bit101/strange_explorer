@@ -6,6 +6,8 @@
 typedef struct {
   double width;
   double height;
+  char* x_formula;
+  char* y_formula;
 } Model;
 
 Model* model_new();

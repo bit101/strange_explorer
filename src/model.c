@@ -6,6 +6,8 @@ Model* model_new() {
   Model* m = malloc(sizeof(Model));
   m->width = 800;
   m->height = 800;
+  m->x_formula = "";
+  m->y_formula = "";
   return m;
 }
 
