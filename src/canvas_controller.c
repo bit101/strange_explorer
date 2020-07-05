@@ -21,8 +21,8 @@ void custom_draw(cairo_t* cr) {
   double c = params->c.value;
   double d = params->d.value;
   double x1, y1;
-  const char* x_str = "sin(a * y) + c * cos(a * x)";
-  const char* y_str = "sin(b * x) + d * cos(b * y)";
+  const char* x_str = model->x_formula;
+  const char* y_str = model->y_formula;
   te_variable vars[] = {
       {"x", &x}, {"y", &y}, {"a", &a}, {"b", &b}, {"c", &c}, {"d", &d},
   };
