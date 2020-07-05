@@ -23,20 +23,21 @@ static GtkScale* c_scale;
 static GtkScale* d_scale;
 
 void use_formula(int index) {
-  model_set_x_formula(model, formula_list[index].x_formula);
-  model_set_y_formula(model, formula_list[index].y_formula);
-  model_set_z_formula(model, formula_list[index].z_formula);
-  params->scale.value = formula_list[index].scale;
-  params->iter.value = formula_list[index].iter;
-  params->a.value = formula_list[index].a;
-  params->b.value = formula_list[index].b;
-  params->c.value = formula_list[index].c;
-  params->d.value = formula_list[index].d;
+  Formula formula = formula_list[index];
+  model_set_x_formula(model, formula.x_formula);
+  model_set_y_formula(model, formula.y_formula);
+  /* model_set_z_formula(model, formula.z_formula); */
+  params->scale.value = formula.scale;
+  params->iter.value = formula.iter;
+  params->a.value = formula.a;
+  params->b.value = formula.b;
+  params->c.value = formula.c;
+  params->d.value = formula.d;
   gtk_entry_set_text(x_entry, model->x_formula);
   gtk_entry_set_text(y_entry, model->y_formula);
-  gtk_entry_set_text(z_entry, model->z_formula);
-  gtk_range_set_value(GTK_RANGE(scale_scale), formula_list[index].scale);
-  gtk_range_set_value(GTK_RANGE(iter_scale), formula_list[index].iter);
+  /* gtk_entry_set_text(z_entry, model->z_formula); */
+  gtk_range_set_value(GTK_RANGE(scale_scale), params->scale.value);
+  gtk_range_set_value(GTK_RANGE(iter_scale), params->iter.value);
   gtk_range_set_value(GTK_RANGE(a_scale), params->a.value);
   gtk_range_set_value(GTK_RANGE(b_scale), params->b.value);
   gtk_range_set_value(GTK_RANGE(c_scale), params->c.value);

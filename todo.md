@@ -1,6 +1,8 @@
 # todo
 
 - formulas to ext file
+  - load all formulas in directory
+  - clean up any memory leaks around 
 - bookmark params
 - save new formulas
 - init x, y
