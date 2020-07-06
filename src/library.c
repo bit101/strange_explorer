@@ -1,4 +1,5 @@
 #include "library.h"
+#include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -50,6 +51,7 @@ void parse_line(Formula* formula, char* line) {
     token = strtok(NULL, " ");
     if (token != NULL) {
       strcat(value, token);
+      strcat(value, " ");
     }
   }
   set_prop(formula, prop, value);
@@ -72,10 +74,23 @@ Formula load_formula(char* file_name) {
 }
 
 Formula* get_formulas() {
-  Formula* formula_list = malloc(sizeof(Formula) * 3);
-  formula_list[0] = load_formula("formulas/pickover.frm");
-  formula_list[1] = load_formula("formulas/dejong.frm");
-  formula_list[2] = load_formula("formulas/hopalong.frm");
+  char path[255] = "formulas/";
+  int count = 0;
+  Formula* formula_list = malloc(sizeof(Formula) * 100);
+  struct dirent* file;
+  DIR* d = opendir("./formulas");
+  if (d) {
+    while ((file = readdir(d)) != NULL) {
+      if (strstr(file->d_name, ".frm") != NULL) {
+        printf("%s\n", file->d_name);
+        strcat(path, file->d_name);
+        formula_list[count] = load_formula(path);
+        strcpy(path, "formulas/");
+        count++;
+      }
+    }
+    closedir(d);
+  }
   return formula_list;
 }
 
