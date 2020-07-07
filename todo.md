@@ -1,9 +1,9 @@
 # todo
 
-- clean up any memory leaks around string creation in formula parsing
 - init x, y
 - x / y offset
 - rotation
+- disable / hide unused param sliders
 - bookmark params
 - save new formulas - name-20201231125959.frm
 - log density display
@@ -25,6 +25,7 @@ x formula text fields
 x formula library
 x formulas to ext file
 x load all formulas in directory
+x clean up any memory leaks around string creation in formula parsing
 
 
 # 3d formulas
