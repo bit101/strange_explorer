@@ -39,6 +39,7 @@ int main(int argc, char** argv) {
   gtk_widget_show_all(window);
   gtk_main();
 
+  controller_destroy();
   model_destroy(model);
   params_destroy(params);
   return 0;
