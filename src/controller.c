@@ -8,9 +8,9 @@
 extern Model* model;
 extern Params* params;
 
-Formula* formula_list;
-static GtkComboBoxText* formulas_combo_box;
+static Formula** formula_list;
 static GtkWidget* drawing_area;
+static GtkComboBoxText* formulas_combo_box;
 static GtkEntry* x_entry;
 static GtkEntry* y_entry;
 static GtkEntry* z_entry;
@@ -23,20 +23,25 @@ static GtkScale* c_scale;
 static GtkScale* d_scale;
 
 void use_formula(int index) {
-  model_set_x_formula(model, formula_list[index].x_formula);
-  model_set_y_formula(model, formula_list[index].y_formula);
-  model_set_z_formula(model, formula_list[index].z_formula);
-  params->scale.value = formula_list[index].scale;
-  params->iter.value = formula_list[index].iter;
-  params->a.value = formula_list[index].a;
-  params->b.value = formula_list[index].b;
-  params->c.value = formula_list[index].c;
-  params->d.value = formula_list[index].d;
+  Formula* formula = formula_list[index];
+
+  // update model / params from formula
+  model_set_x_formula(model, formula->x_formula);
+  model_set_y_formula(model, formula->y_formula);
+  /* model_set_z_formula(model, formula.z_formula); */
+  params->scale.value = formula->scale;
+  params->iter.value = formula->iter;
+  params->a.value = formula->a;
+  params->b.value = formula->b;
+  params->c.value = formula->c;
+  params->d.value = formula->d;
+
+  // update ui from model / params
   gtk_entry_set_text(x_entry, model->x_formula);
   gtk_entry_set_text(y_entry, model->y_formula);
-  gtk_entry_set_text(z_entry, model->z_formula);
-  gtk_range_set_value(GTK_RANGE(scale_scale), formula_list[index].scale);
-  gtk_range_set_value(GTK_RANGE(iter_scale), formula_list[index].iter);
+  /* gtk_entry_set_text(z_entry, model->z_formula); */
+  gtk_range_set_value(GTK_RANGE(scale_scale), params->scale.value);
+  gtk_range_set_value(GTK_RANGE(iter_scale), params->iter.value);
   gtk_range_set_value(GTK_RANGE(a_scale), params->a.value);
   gtk_range_set_value(GTK_RANGE(b_scale), params->b.value);
   gtk_range_set_value(GTK_RANGE(c_scale), params->c.value);
@@ -44,19 +49,23 @@ void use_formula(int index) {
 }
 
 void init_formulas() {
-  for (int i = 0; i < formula_count(); i++) {
-    gtk_combo_box_text_append_text(formulas_combo_box, formula_list[i].name);
+  int index = 0;
+  Formula_ptr fp = formula_list[index];
+  while (fp != NULL) {
+    gtk_combo_box_text_append_text(formulas_combo_box, fp->name);
+    index++;
+    fp = formula_list[index];
   }
   gtk_combo_box_set_active(GTK_COMBO_BOX(formulas_combo_box), 0);
   use_formula(0);
 }
-void controller_init(GtkBuilder* builder) {
-  formula_list = get_formulas();
+
+void get_widgets(GtkBuilder* builder) {
   drawing_area = GTK_WIDGET(gtk_builder_get_object(builder, "drawing_area"));
+  formulas_combo_box = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "formulas_combo_box"));
   x_entry = GTK_ENTRY(gtk_builder_get_object(builder, "x_expr_entry"));
   y_entry = GTK_ENTRY(gtk_builder_get_object(builder, "y_expr_entry"));
   z_entry = GTK_ENTRY(gtk_builder_get_object(builder, "z_expr_entry"));
-  formulas_combo_box = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "formulas_combo_box"));
   update_formulas_button = GTK_BUTTON(gtk_builder_get_object(builder, "update_formulas_button"));
   scale_scale = GTK_SCALE(gtk_builder_get_object(builder, "scale_scale"));
   iter_scale = GTK_SCALE(gtk_builder_get_object(builder, "iter_scale"));
@@ -64,8 +73,20 @@ void controller_init(GtkBuilder* builder) {
   b_scale = GTK_SCALE(gtk_builder_get_object(builder, "b_scale"));
   c_scale = GTK_SCALE(gtk_builder_get_object(builder, "c_scale"));
   d_scale = GTK_SCALE(gtk_builder_get_object(builder, "d_scale"));
+}
 
+void controller_init(GtkBuilder* builder) {
+  formula_list = get_formulas();
+  get_widgets(builder);
   init_formulas();
+}
+
+void controller_destroy() {
+  int index = 0;
+  while (formula_list[index] != NULL) {
+    free(formula_list[index++]);
+  }
+  free(formula_list);
 }
 
 gboolean on_export_button_clicked(GtkButton* button, gpointer user_data) {

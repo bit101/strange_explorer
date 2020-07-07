@@ -5,5 +5,6 @@
 
 void controller_init(GtkBuilder* builder);
 gboolean on_export_button_clicked(GtkButton* button, gpointer user_data);
+void controller_destroy();
 
 #endif
